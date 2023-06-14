@@ -1,0 +1,7 @@
+firstname=input("enter your firstname")
+#print (firstname)
+#print (type(firstname))
+lastname=input("enter your lastname")
+#print(lastname)
+#print(type(lastname))
+print ("username is", firstname + " " + lastname)

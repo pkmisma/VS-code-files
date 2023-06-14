@@ -1,0 +1,20 @@
+---
+- name: to install nginx web server
+  hosts: all
+  become: true
+  tasks:
+    
+    - name: install nginx server
+      package:
+         name: nginx
+         state: present
+    
+    - name: copy the index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/
+
+    - name: start the service
+      service: 
+        name: nginx
+        state: started

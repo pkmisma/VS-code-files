@@ -1,0 +1,23 @@
+apiVersion: v1
+items:
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    creationTimestamp: "2022-12-07T20:15:21Z"
+    name: developer-role
+    namespace: development
+    resourceVersion: "4226"
+    uid: d59d9432-7f05-45cc-af00-c985c04fec3f
+  rules:
+  - apiGroups:
+    - ""
+    resources:
+    - pods
+    - services
+    - persistentvolumeclaims
+    verbs:
+    - '*'
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""

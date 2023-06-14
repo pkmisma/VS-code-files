@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deploy
+spec:
+ replicas: 2
+ strategy:
+  type: RollingUpdate
+  rollingUpdate:
+     maxSurge: 1 
+     maxUnavailable: 2
+ selector:
+    matchLabels:
+       type: app
+ template:
+    metadata:
+      labels:
+         type: app
+    spec:
+      containers:
+        - name: httpd
+          image: httpd:2.4.25

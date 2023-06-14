@@ -1,0 +1,18 @@
+http {
+    server {
+        listen http://ismail-lb.switzerlandnorth.cloudapp.azure.com;
+        root   /usr/share/nginx/html;
+
+        location /api {
+            api;
+            satisfy all;
+
+            allow http://ismail-lb.switzerlandnorth.cloudapp.azure.com/;
+            allow 127.0.0.1;
+            deny  all;
+
+            auth_basic           "Administrator’s Area";
+            auth_basic_user_file /etc/nginx/.htpasswd; 
+        }
+    }
+}

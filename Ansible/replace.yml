@@ -1,0 +1,17 @@
+---
+- name: playbook to change the server port
+  hosts: web1
+  tasks:
+  
+    - name: task to replace using replace module
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: Listen 80
+        replace: Listen 8080
+      notify: httpd service restart task
+
+  handlers:
+    - name: httpd service restart task
+      service:
+          name: httpd
+          state: restarted

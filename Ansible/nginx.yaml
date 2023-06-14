@@ -1,0 +1,41 @@
+---
+
+
+- name: install webserver copy index.html and enable basic auth
+  hosts: server1
+  become: yes
+  tasks:
+        - name: install the web server
+          package:
+               name: nginx
+               state: present
+          tags:
+              - webserver
+
+        - name: copy the customised index.html file
+          copy:
+               src: /home/ansible/index.html
+               dest: /var/www/html/
+          tags:
+              - index
+
+        - name: copy the default nginx file to servers
+          copy:
+               src: /home/ansible/default
+               dest: /etc/nginx/sites-available/
+
+
+        - name: creating symlink
+          file:
+             src: /etc/nginx/sites-available/default
+             dest: /etc/nginx/sites-enabled/default
+             state: link
+             notify: restart the service
+
+        - name: restart the service
+          service:
+                name: nginx
+                state: restarted
+                enabled: yes
+          tags:
+              - restart

@@ -1,0 +1,20 @@
+---
+- name: install webservr and copy index.html
+  hosts: all
+  become: yes
+  tasks:
+        - name: install the web server
+          package:
+               name: nginx
+               state: present
+
+        - name: copy index.html file
+          copy:
+               src: ansible/index.html
+               dest: /var/www/html/
+
+        - name: enable the service
+          service:
+                name: nginx
+                state: restarted
+                enabled: yes

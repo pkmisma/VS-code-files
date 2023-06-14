@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: configmap-example-pod
+spec:
+ containers:
+  - name: configmap-example-busybox
+    image: busybox
+    command: [ "/bin/sh", "-c", "env" ]
+    envFrom:
+# Load the Complete ConfigMap
+     - configMapRef:
+          name: config-map-pod
+~                              
+#kubectl create configmap config-map-pod --from-literal=db-name=employees-data --from-literal=server-name=127.0.0.1 --from-literal=server-port=3030 --from-literal=example.url="http://example.com"
+   20  kubectl get configmap config-map-pod

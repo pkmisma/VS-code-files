@@ -1,0 +1,15 @@
+---
+- name: playbook for blockinline
+  hosts: web1
+  tasks:
+
+
+     - name: task for adding a new line
+       blockinfile:
+          path: /var/www/html/index.html
+          block: | 
+               Welcome to KodeKloud!
+               This is Ansible Lab.
+          owner: apache
+          group: apache
+          insertbefore: BOF

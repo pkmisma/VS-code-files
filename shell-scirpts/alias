@@ -1,0 +1,4 @@
+alias sts='systemctl status $1'
+alias str='systemctl start $1'
+alias stp='systemctl stop $1'
+alias rstr='systemctl restart $1'

@@ -1,0 +1,7 @@
+#!/bin/bash
+  
+echo "This script will print the length of the given word"
+
+read -p "Enter the string: " str
+
+echo "Length of the given string $str is ${#str}"                                              

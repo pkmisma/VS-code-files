@@ -1,0 +1,14 @@
+---
+ - name: This playbook will launch EC2 instance in AWS
+   hosts: localhost
+   tasks:
+       - amazon.aws.ec2_instance:
+          count: "1"
+          image_id: "ami-0778521d914d23bc1"
+          instance_type: "t2.micro"
+          key_name: "aws-key"
+          name: "ansible-vm"
+          region: "us-east-1"
+          state: present
+          vpc_subnet_id: "subnet-075793088b55dcbff"
+

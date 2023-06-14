@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+   name: countdown-nautilus
+spec:
+   template:
+    metadata:
+      name: countdown-nautilus
+    spec:
+     containers:
+       - name: container-countdown-nautilus
+         image: debian:latest
+         command: ['sh', '-c', 'for i in ten nine eight seven six five four three two one ; do echo $i ; done']
+     restartPolicy: Never

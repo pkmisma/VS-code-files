@@ -1,0 +1,53 @@
+---
+- name: install Docker
+  hosts: all
+  tasks:
+
+    - name: Install yum utils
+      yum:
+        name: yum-utils
+        state: latest
+
+    - name: Add signing key
+      ansible.builtin.rpm_key:
+        key: "https://download.docker.com/linux/rhel/gpg"
+        state: present
+
+    - name: Add repository into repo.d list
+      ansible.builtin.yum_repository:
+        name: docker
+        description: docker repository
+        baseurl: "https://download.docker.com/linux/rhel/$releasever/$basearch/stable"
+        enabled: true
+        gpgcheck: true
+        gpgkey: "https://download.docker.com/linux/rhel/gpg"
+
+    - name: Install Docker
+      yum:
+        name:
+          - docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Start Docker
+      service:
+        name: "docker"
+        enabled: true
+        state: started
+
+    - name: pull image
+      community.docker.docker_image:
+        name: "httpd"
+        source: pull
+        tag: latest
+
+    - name: run httpd container
+      docker_container:
+        name: webserver
+        image: httpd
+        state: started
+        detach: true
+        exposed_ports:
+          - 80
+        ports:
+          - 8080:80

@@ -1,0 +1,52 @@
+---
+- name: playboot for server security guidelines
+  hosts: all
+  become: yes
+  tasks:
+
+    - set_fact:
+        ssh_port: 8888
+
+
+    - name: create a deploy user acount
+      user:
+        name: deploy
+        state: present
+        password:
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+        groups: sudo
+    - name:
+      apt:
+       update_cache: true
+       upgrade: true
+
+    - name:  Allow only "ssh" traffic
+      ufw:
+        rule: allow
+        port: 22
+    - name:
+      service:
+        name: ufw
+        enabled: yes
+
+    - name: Daily email summary
+      debconf:
+        name: postfix
+
+    - name: Disable root login
+      lineinfile:
+           dest: /etc/ssh/sshd_config
+           regexp: '^PermitRootLogin'
+           line: "PermitRootLogin yes"
+           state: present
+           backup: yes
+      notify:
+       - restart ssh
+
+  handlers:
+   - name: restart ssh
+     service:
+       name: sshd
+       state: restarted

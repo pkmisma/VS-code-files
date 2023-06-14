@@ -1,0 +1,46 @@
+---
+
+- name: System Reboot activities
+  hosts: all
+  become: yes
+  tasks:
+    
+    - name: task to update
+      yum:
+       update_only: true
+
+    - name: reboot the server
+      command: 'reboot'
+
+    - name: Wait for port 22 to be available
+      wait_for:
+         port: 22
+         host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+         search_regex: OpenSSH
+         delay: 300
+      vars:
+        ansible_connection: local
+
+
+    - name: create a deploy user acount
+      user:
+        name: deploy
+        state: present
+        password: 
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+        groups: sudoers
+
+    - name:  Allow only "ssh" traffic
+      ufw:
+        rule: allow
+        port: 22
+        enabled: yes
+
+    - name: Daily email summary
+      debconf:
+        name: postfix
+        
+
+        

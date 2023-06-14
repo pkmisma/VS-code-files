@@ -1,0 +1,27 @@
+---
+name: play to allow ports
+hosts: all
+tasks:
+
+  - name: task for firewalld module
+    firewalld:
+      source: {{ item }}
+      rule: allow
+      state: enable
+    loop:
+      - http
+      - https
+---
+name: playbook for user
+hosts: all
+beocme: yes
+vars:
+  users:
+   - nadaf
+   - ismail
+tasks:
+
+  - name: create user
+    user: 
+     name: {{ item }}
+     password: 

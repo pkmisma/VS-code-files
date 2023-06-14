@@ -1,0 +1,40 @@
+---
+
+- name: playbook to create users and groups
+  hosts: stapp01
+  become: yes
+  tasks:
+   - name: create the developer group
+     group:
+       name:
+         developers
+       state: present
+   - name: create the admins group
+     group:
+      name:
+       admins
+      state: present
+   - name: create the user for developer group
+     user:
+      name: "{{ item }}"
+      password: "{{ 'LQfKeWWxWD' | password_hash ('sha512') }}"
+      home: /var/www/"{{ item }}"
+      groups: developers
+      state: present
+     loop:
+      - tim
+      - ray
+      - jim
+      - mark
+   - name: create the users for admins group
+     user:
+      name: "{{ item }}"
+      password: "{{ 'B4zNgHA7Ya' | password_hash ('sha512') }}"
+      groups: admins,wheel
+      state: present
+     loop:
+      - david
+      - rob
+      - joy
+      
+     

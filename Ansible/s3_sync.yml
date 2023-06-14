@@ -1,0 +1,15 @@
+---
+
+- name: playbook to copy files from server to s3
+  hosts: all
+  tasks:
+
+
+       - name: Synchronization using rsync protocol (pull)
+         s3_sync:
+           access_key: AKIAQI33YVUK5AXVWVEH
+           secret_key: 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
+           file_root: /nfs
+           bucket: nfs-media-staging
+           exclude: "*.txt"
+           delete: yes

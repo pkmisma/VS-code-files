@@ -1,0 +1,22 @@
+---
+- name: Playbook for reboot and server guidelines
+  hosts: all
+  become: yes
+  tasks:
+    
+    - name: task to update
+      yum:
+       update_only: true
+
+    - name: reboot the server
+      command: 'reboot'
+
+    - name: Wait for port 22 to be available
+      wait_for:
+         port: 22
+         host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+         search_regex: OpenSSH
+         delay: 10
+      vars:
+        ansible_connection: local
+              
