@@ -1,0 +1,43 @@
+// Jenkinsfile
+pipeline {
+    agent {
+        kubernetes {
+            yaml """
+            apiVersion: v1
+            kind: Pod
+            metadata:
+              name: jenkins-agent
+            spec:
+              containers:
+              - name: jenkins-agent
+                image: your-docker-registry/your-jenkins-agent:latest
+                volumeMounts:
+                - name: maven-repo
+                  mountPath: /root/.m2/repository
+              volumes:
+              - name: maven-repo
+                persistentVolumeClaim:
+                  claimName: maven-repo-pvc
+            """
+        }
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                container('jenkins-agent') {
+                    script {
+                        // Maven build command
+                        sh 'mvn clean install'
+                    }
+                }
+            }
+        }
+    }
+}

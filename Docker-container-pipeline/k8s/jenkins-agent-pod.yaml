@@ -1,0 +1,27 @@
+# k8s/jenkins-agent-pod.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: maven-repo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-agent
+spec:
+  containers:
+  - name: jenkins-agent
+    image: your-docker-registry/your-jenkins-agent:latest
+    volumeMounts:
+    - name: maven-repo
+      mountPath: /root/.m2/repository
+  volumes:
+  - name: maven-repo
+    persistentVolumeClaim:
+      claimName: maven-repo-pvc
